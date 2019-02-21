@@ -1,6 +1,6 @@
 {
   "name": "@vve/redux-saga",
-  "version": "0.16.4",
+  "version": "6.2.0-alpha.0",
   "description": "Saga middleware for Redux to handle Side Effects",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -55,7 +55,6 @@
     "url": "https://github.com/redux-saga/redux-saga/issues"
   },
   "homepage": "https://redux-saga.js.org/",
-  "dependencies": {},
   "devDependencies": {
     "babel-plugin-annotate-pure-calls": "^0.4.0",
     "babel-polyfill": "^6.7.4",
