@@ -9,7 +9,6 @@
     "@babel/react"
   ],
   "plugins": [
-    "@babel/proposal-export-default-from",
     "@babel/plugin-transform-runtime"
   ],
   "env": {

@@ -1,7 +1,7 @@
 /**
  * Created by fed on 2017/8/24.
  */
-import { simpleBind, any } from 'rrc-loader-helper/lib/sagas';
+import { any, markStatus } from 'rrc-loader-helper/lib/sagas';
 
 const defaultState = {
   name: 'bbc/list',
@@ -15,7 +15,7 @@ const defaultState = {
 };
 
 function sleep(n) {
-  return new Promise(resolve => setTimeout(resolve, n));
+  return new Promise(resolve => setTimeout(() => resolve(n), n));
 }
 
 
@@ -25,13 +25,10 @@ export default {
     state.value = action.value;
   },
   * zz(action, ctx, put) {
-    yield simpleBind(Promise.resolve(1), 'test.t1');
+    markStatus('kkk');
     yield any([Promise.resolve(2), Promise.all([sleep(1000), Promise.resolve(3)])], function* (pro, index) {
       const result = yield pro;
       yield put((draft) => { draft.test2[index] = result; });
-    });
-    yield put((state) => {
-      state.loading = true;
     });
     yield sleep(2 * 1000);
     try {

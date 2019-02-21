@@ -18,4 +18,8 @@ export function setCallback(fn) {
   callbacks.push(fn);
 }
 
-export const CurrentPageContext = createReactContext('');
+export const CurrentPageContext = createReactContext({
+  page: '',
+  url: null,
+  retain: false,
+});

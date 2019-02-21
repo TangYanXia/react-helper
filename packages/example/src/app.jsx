@@ -1,22 +1,27 @@
 import 'babel-polyfill';
 import React from 'react';
 import {
-  createStore, applyMiddleware, combineReducers, compose,
+  createStore, applyMiddleware, compose,
 } from 'redux';
+import {
+  combineReducers2,
+} from 'rrc-loader-helper/lib';
 import createSagaMiddleware from 'redux-saga';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 import { routerMiddleware } from 'react-router-redux';
+import 'shineout/dist/theme.default.css';
 
 import reducers, { rootSaga } from './components/index';
 import RootView from './components/root';
 
 import history from './lib/history';
 
+
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
-  combineReducers(reducers),
+  combineReducers2(reducers),
   compose(
     applyMiddleware(sagaMiddleware),
     applyMiddleware(routerMiddleware(history)),
