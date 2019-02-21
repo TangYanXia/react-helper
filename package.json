@@ -4,6 +4,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "publish": "lerna publish",
+    "prepublish": "lerna run build",
     "build": "lerna run build",
     "changelog": "lerna-changelog"
   },

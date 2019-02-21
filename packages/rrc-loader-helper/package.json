@@ -13,7 +13,7 @@
   "scripts": {
     "test": "jest",
     "build": "babel src --out-dir lib",
-    "preversion": "npm test && npm run build"
+    "preversion": "npm test"
   },
   "repository": {
     "type": "git",

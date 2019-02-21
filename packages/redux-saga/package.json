@@ -26,7 +26,7 @@
     "shop": "cross-env BABEL_ENV=cjs node examples/shopping-cart/server.js",
     "async": "cross-env BABEL_ENV=cjs node examples/async/server.js",
     "real-world": "npm --prefix examples/real-world install examples/real-world && cross-env BABEL_ENV=cjs node --require babel-register examples/real-world/server.js",
-    "preversion": "npm test && npm run build"
+    "preversion": "npm test"
   },
   "repository": {
     "type": "git",
