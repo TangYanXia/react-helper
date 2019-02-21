@@ -1,18 +1,12 @@
 import reduceReducers from 'reduce-reducers';
-import combineReducers from './combine-reducers';
+import { combineReducers } from 'redux';
 import invariant from '../util/invariant';
-import {
-  retainHocReducer,
-} from '../retain';
 
 const noop = () => {};
 const registeredReducers = [];
 
 export function decorateReducers(reducers) {
-  return reduceReducers(
-    ...registeredReducers,
-    combineReducers(Object.assign(reducers, { '.retain': retainHocReducer }))
-  );
+  return reduceReducers(...registeredReducers, combineReducers(reducers));
 }
 
 // reducer can access global state.

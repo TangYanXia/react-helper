@@ -7,8 +7,5 @@
     "no-console": "off",
     "import/no-unresolved": "off",
     "no-param-reassign": "off"
-  },
-  "env": {
-    "jest": true
   }
 }

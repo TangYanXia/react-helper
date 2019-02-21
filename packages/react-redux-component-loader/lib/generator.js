@@ -51,7 +51,6 @@ function isExists(ctx, name) {
   }
 }
 
-// before after
 exports.component = function (components, config, ctx) {
   const importHelper = new ImportHelper();
 
@@ -85,14 +84,13 @@ exports.component = function (components, config, ctx) {
         const retain = Object.prototype.hasOwnProperty.call(metaInfo, 'retain') ? metaInfo.retain : config.retain;
         if (metaInfo.sync) {
           const comp = JSON.stringify(`${currentPath.join('/')}/view.jsx`);
-          component = `Loadable({ route: ${JSON.stringify(metaInfo.route)}, retain: ${JSON.stringify(retain)}, page:${JSON.stringify(reducerKey)}, loading: Loading, loader: () =>`
-            + ` new Promise(resolve => require.ensure([${comp}], require => resolve([require(${comp})]),${JSON.stringify(compName)}))`
+          component = `Loadable({ retain: ${JSON.stringify(retain)}, page:${JSON.stringify(reducerKey)}, loading: Loading, loader: () =>`
+            + ` new Promise(resolve => require.ensure([${comp}], require => resolve(require(${comp})),${JSON.stringify(compName)}))`
             + ' })';
         } else {
           const comp = JSON.stringify(`${currentPath.join('/')}/me.json`);
-          component = `Loadable({ route: ${JSON.stringify(metaInfo.route)}, retain: ${JSON.stringify(retain)}, page:${JSON.stringify(reducerKey)},loading: Loading, loader: () => `
-           + `new Promise(resolve => require.ensure([${comp}], require => resolve(require(${comp})),${JSON.stringify(compName)}))`
-           + `.then(module => asyncPageCallback(module, "${reducerKey}", reducers, ${JSON.stringify(retain && metaInfo.route)}))})`;
+          component = `Loadable({ retain: ${JSON.stringify(retain)}, page:${JSON.stringify(reducerKey)},loading: Loading, loader: () => `
+           + `new Promise(resolve => require.ensure([${comp}], require => resolve(require(${comp})),${JSON.stringify(compName)})).then(module => asyncPageCallback(module, "${reducerKey}", reducers))})`;
         }
         if (key === config.index) {
           const routeArg = config.dangerousRoute && metaInfo.route;
@@ -108,7 +106,7 @@ exports.component = function (components, config, ctx) {
 
 exports.reducers = function (components, config, ctx) {
   const importHelper = new ImportHelper();
-  let resultStr = '{ ".retain": (s = {}) => s, \n';
+  let resultStr = '{ ".retained": (s = {}) => s, \n';
   importHelper.addDependencies('redux', '{ combineReducers }');
   const reducerDecoratorIdentifier = importHelper.addDependencies('rrc-loader-helper/lib/reducer-decorate', 'enhanceReducer');
 
@@ -160,7 +158,7 @@ exports.saga = function (components, config, ctx) {
   }, () => {
     currentPath.pop();
   });
-  return [`[${resultList.join(',')}, ...Array(1000).fill(0)]`, importHelper.toImportList()];
+  return [`[${resultList.join(',')}]`, importHelper.toImportList()];
 };
 
 exports.bundle = function (reducerName, ctx) {

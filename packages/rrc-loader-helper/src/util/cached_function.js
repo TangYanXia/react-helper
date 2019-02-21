@@ -8,9 +8,6 @@ import {
 import {
   setCallback
 } from '../current-page';
-import {
-  enhanceAction,
-} from '../retain';
 
 const onChangeCache = new Map();
 const connector = '*&*^*&';
@@ -22,8 +19,7 @@ setCallback(() => {
 const ok = () => false;
 const noop = () => {};
 
-function onchange(caller, e, page, val, mapping, url) {
-  console.log('called', url)
+function onchange(caller, e, page, val, mapping) {
   const store = getStore();
   let value = e;
   if (e && e.target) {
@@ -32,19 +28,19 @@ function onchange(caller, e, page, val, mapping, url) {
   if (mapping) value = reverseMappingVal(value, mapping);
 
   if (!caller.fns.disallow(value)) {
-    store.dispatch(enhanceAction({
+    store.dispatch({
       type: action,
       page,
       key: val,
-      value,
-    }, { page, url }));
+      value
+    });
   }
 
   return caller.fns.originOnchange(e);
 }
 
-function generateCacheKey(page, val, mapping, url) {
-  let key = [page, val, url].map(x => x.toString()).join(connector);
+function generateCacheKey(page, val, mapping) {
+  let key = [page, val].map(x => x.toString()).join(connector);
   if (mapping) {
     key += connector + JSON.stringify(mapping);
   }
@@ -53,15 +49,15 @@ function generateCacheKey(page, val, mapping, url) {
 }
 
 export default function getCachedOnchangeFunction(page,
-  val, mapping, disallow = ok, originOnchange = noop, url = '') {
-  const key = generateCacheKey(page, val, mapping, url);
+  val, mapping, disallow = ok, originOnchange = noop) {
+  const key = generateCacheKey(page, val, mapping);
 
   let cache = onChangeCache.get(key);
   if (cache) {
     // disallow or originOnchange may update, but cache reference won't change.
     cache.fns = { disallow, originOnchange };
   } else {
-    cache = e => onchange(cache, e, page, val, mapping, url);
+    cache = e => onchange(cache, e, page, val, mapping);
     cache.fns = { disallow, originOnchange };
     onChangeCache.set(key, cache);
   }

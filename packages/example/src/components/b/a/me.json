@@ -1,6 +1,6 @@
 {
+  "route": "/:id?",
   "description": "",
   "crumb": [],
-  "detail": true,
-  "retain": true
+  "detail": true
 }

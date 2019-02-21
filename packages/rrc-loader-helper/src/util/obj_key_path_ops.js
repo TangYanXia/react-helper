@@ -10,7 +10,7 @@ export function setValKeyPath(obj, keys, val) {
   const key = keys[0];
   let tempVal;
   if (Array.isArray(obj) || typeof key === 'number') {
-    tempVal = [...obj];
+    tempVal = Object.assign([], obj);
   } else {
     tempVal = Object.assign({}, obj);
   }

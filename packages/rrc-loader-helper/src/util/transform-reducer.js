@@ -1,4 +1,4 @@
-import { put } from '@vve/redux-saga/effects';
+import { put } from 'redux-saga/effects';
 
 import { getStore } from '../inj-dispatch';
 
@@ -27,7 +27,7 @@ export default function (obj, page) {
     const key = keys[i];
     result[key] = function dispatchProvidedByRRCLoaders(arg) {
       let dispatch;
-      // @TODO magic, problem!!!
+      // @TODO magic
       if (!this.inSaga) {
         const store = getStore();
         if (!store) {
@@ -38,13 +38,8 @@ export default function (obj, page) {
         dispatch = put;
       }
 
-      if (arg && typeof arg === 'function') {
+      if (arg && typeof arg !== 'object') {
         throw new Error('In the mobx style, you must pass arguments to method in object form.');
-      }
-      if (typeof arg !== 'object') {
-        arg = {
-          payload: arg,
-        };
       }
       return dispatch(Object.assign({}, arg, {
         type: `${page}/${key}`,
