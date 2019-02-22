@@ -107,11 +107,9 @@ class Pager extends Component {
         if (retain && route) {
           // @TODO wrong !!
           this.state.views.add(url);
-          this.setState(Object.assign(mutingState, setPageStore(url, draftState)));
-        } else {
-          this.setState(mutingState);
-          setPageStore(url, draftState);
         }
+        setPageStore(url, draftState);
+        this.setState(mutingState);
       }
     })
       .catch((error) => {
