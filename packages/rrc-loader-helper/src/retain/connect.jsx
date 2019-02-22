@@ -23,12 +23,16 @@ export default function connect2(mapStateToProps, ...others) {
               function muteDispatch({ dispatch, otherParentProps: oProps, ...otherProps }) {
                 return (
                   <PageComponent
-                    dispatch={action => dispatch(enhanceAction(action, { url, page, }))}
+                    dispatch={action => dispatch(enhanceAction(action, {
+                      url,
+                      page,
+                    }))}
                     {...oProps}
                     {...otherProps}
                   />
                 );
               }
+
               muteDispatch.displayName = `muteDispatch(${url}})`;
               if (!PageComponent.caches.has(url)) {
                 if (!retain) {
@@ -49,13 +53,16 @@ export default function connect2(mapStateToProps, ...others) {
 
               const ConnectedComponent = PageComponent.caches.get(url);
 
-              return (
-                <div style={{ display: active ? 'block' : 'none' }}>
-                  <Deactivatable active={active}>
-                    <ConnectedComponent otherParentProps={otherParentProps} />
-                  </Deactivatable>
-                </div>
-              );
+              if (retain) {
+                return (
+                  <div style={{ display: active ? 'block' : 'none' }}>
+                    <Deactivatable active={active}>
+                      <ConnectedComponent otherParentProps={otherParentProps} />
+                    </Deactivatable>
+                  </div>
+                );
+              }
+              return <ConnectedComponent {...otherParentProps} />;
             }
           }
         </CurrentPageContext.Consumer>
